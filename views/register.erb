@@ -1,0 +1,106 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-4">
+      <h1>[Logo] Intros</h1>
+    </div>
+
+    <ul class="col-xs-8 list-inline text-right header-nav">
+      <li><a href="#">Feed</a></li>
+      <li><a href="#">FAQ</a></li>
+      <li><a href="#">Sign Up</a></li>
+      <li><a href="#">Sign In</a></li>
+    </ul>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <form action="/register/preferences" method="post">
+        <div class="form-inline">
+          <div class="form-group">
+            <label class="sr-only">First name</label>
+            <input type="text" class="form-control" name:"first_name" placeholder="First name">
+          </div>
+          <div class="form-group">
+            <label class="sr-only">Last name</label>
+            <input type="text" class="form-control" name="last_name" placeholder="Last name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="sr-only">Email address</label>
+          <input type="email" class="form-control" name="email" placeholder="Email">
+        </div>
+        <div class="form-group">
+          <label class="sr-only">Password</label>
+          <input type="password" class="form-control" name="password" placeholder="Password">
+        </div>
+
+        <div class="interest_industries">
+          <label class="checkbox-inline col-sm-4">
+            <input type="checkbox" value="1"> Startups
+          </label>
+          <label class="checkbox-inline col-sm-4">
+            <input type="checkbox" value="2"> Entreprenuer
+          </label>
+          <label class="checkbox-inline col-sm-4">
+            <input type="checkbox" value="3"> Software Development
+          </label>
+          <label class="checkbox-inline col-sm-4">
+            <input type="checkbox" value="4"> UX/UI
+          </label>
+          <label class="checkbox-inline col-sm-4">
+            <input type="checkbox" value="5"> Design
+          </label>
+          <label class="checkbox-inline col-sm-4">
+            <input type="checkbox" value="6"> Advertising
+          </label>
+          <label class="checkbox-inline col-sm-4">
+            <input type="checkbox" value="7"> Marketing
+          </label>
+          <label class="checkbox-inline col-sm-4">
+            <input type="checkbox" value="8"> Product Management
+          </label>
+          <label class="checkbox-inline col-sm-4">
+            <input type="checkbox" value="9"> Engineering
+          </label>
+          <label class="checkbox-inline col-sm-4">
+            <input type="checkbox" value="10"> Freelancer
+          </label>
+          <label class="checkbox-inline col-sm-4">
+            <input type="checkbox" value="11"> Corporate
+          </label>
+          <label class="checkbox-inline col-sm-4">
+            <input type="checkbox" value="12"> Legal
+          </label>
+          <label class="checkbox-inline col-sm-4">
+            <input type="checkbox" value="13"> Consulting
+          </label>
+          <label class="checkbox-inline col-sm-4">
+            <input type="checkbox" value="14"> Other
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="sr-only">LinkedIn profile</label>
+          <input type="url" class="form-control" name="linkedin_url" placeholder="LinkedIn profile">
+        </div>
+        <div class="form-group">
+          <label class="sr-only">Personal links</label>
+          <input type="url" class="form-control" name="personal_url" placeholder="Link to your blog, website, portfolio (optional)">
+        </div>
+        <select class="form-control" name="location">
+        <option value="melbourne">Melbourne</option>
+        <option value="sydney">Sydney</option>
+        <option value="other">Other</option>
+        </select>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox"> I agree for my personal details to be shared during the introduction.
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Register</button>
+      </form>
+    </div>
+  </div>
+
+
+</div>
