@@ -4,40 +4,55 @@ CREATE DATABASE heyintro;
 CREATE TABLE users
 (
   id SERIAL4 PRIMARY KEY,
-  user_id VARCHAR(200) NOT NULL,
   first_name VARCHAR(500) NOT NULL,
   last_name VARCHAR(500) NOT NULL,
   email VARCHAR(500) NOT NULL,
   password_digest VARCHAR(500) NOT NULL,
   linkedin_url VARCHAR(2500) NOT NULL,
-  personal_url VARCHAR (2500),
-  location VARCHAR(500) NOT NULL,
-  agreement VARCHAR(200) NOT NULL,
-  created_at,
-  updated_at
+  personal_url VARCHAR(2500),
+  current_industry VARCHAR(500),
+  location_id INTEGER,
+  admin BOOLEAN,
+  accept_terms VARCHAR(50)
 );
+
+INSERT INTO users (first_name, last_name, email, password_digest, linkedin_url, personal_url, current_industry, location_id) VALUES ('Aviel', 'Goh', 'avielgwk@gmail.com', 'avielgoh', 'https://au.linkedin.com/in/avielgoh', 'http://avielgoh.com/', "Software Development", 2);
+
+CREATE TABLE locations
+(
+  id SERIAL4 PRIMARY KEY,
+  city VARCHAR(500) NOT NULL,
+  country VARCHAR(500) NOT NULL
+);
+# each User belongs_to a Location
+# each Location has_many Users
+
+INSERT INTO locations (city, country) VALUES ('Other', '');
+INSERT INTO locations (city, country) VALUES ('Melbourne', 'Australia');
+INSERT INTO locations (city, country) VALUES ('Sydney', 'Australia');
 
 CREATE TABLE industries
 (
   id SERIAL4 PRIMARY KEY,
-  industry_id VARCHAR(200) NOT NULL,
   name VARCHAR(500) NOT NULL
 );
 
-INSERT INTO industries (industry_id, name) VALUES (1, 'Startups');
-INSERT INTO industries (industry_id, name) VALUES (2, 'Entreprenuer');
-INSERT INTO industries (industry_id, name) VALUES (3, 'Software Development');
-INSERT INTO industries (industry_id, name) VALUES (4, 'UX/UI');
-INSERT INTO industries (industry_id, name) VALUES (5, 'Design');
-INSERT INTO industries (industry_id, name) VALUES (6, 'Advertising');
-INSERT INTO industries (industry_id, name) VALUES (7, 'Marketing');
-INSERT INTO industries (industry_id, name) VALUES (8, 'Product Management');
-INSERT INTO industries (industry_id, name) VALUES (9, 'Engineering');
-INSERT INTO industries (industry_id, name) VALUES (10, 'Freelancer');
-INSERT INTO industries (industry_id, name) VALUES (11, 'Corporate');
-INSERT INTO industries (industry_id, name) VALUES (12, 'Legal');
-INSERT INTO industries (industry_id, name) VALUES (13, 'Consulting');
-INSERT INTO industries (industry_id, name) VALUES (14, 'Other');
+INSERT INTO industries (name) VALUES ('Startups');
+INSERT INTO industries (name) VALUES ('Entreprenuer');
+INSERT INTO industries (name) VALUES ('Software Development');
+INSERT INTO industries (name) VALUES ('UX/UI');
+INSERT INTO industries (name) VALUES ('Design');
+INSERT INTO industries (name) VALUES ('Advertising');
+INSERT INTO industries (name) VALUES ('Marketing');
+INSERT INTO industries (name) VALUES ('Product Management');
+INSERT INTO industries (name) VALUES ('Engineering');
+INSERT INTO industries (name) VALUES ('Freelancer');
+INSERT INTO industries (name) VALUES ('Corporate');
+INSERT INTO industries (name) VALUES ('Legal');
+INSERT INTO industries (name) VALUES ('Consulting');
+INSERT INTO industries (name) VALUES ('Not-for-profit');
+INSERT INTO industries (name) VALUES ('Education');
+INSERT INTO industries (name) VALUES ('Other');
 
 -- Startups
 -- Entreprenuer
@@ -54,18 +69,19 @@ INSERT INTO industries (industry_id, name) VALUES (14, 'Other');
 -- Consulting
 -- Other
 
-CREATE TABLE user_industries
+CREATE TABLE interests
 (
   id SERIAL4 PRIMARY KEY,
-  user_id VARCHAR(200),
-  industry_id VARCHAR(200)
+  user_id INTEGER,
+  industry_id INTEGER
 );
 
-CREATE TABLE interest_industries
+
+CREATE TABLE industries_users
 (
   id SERIAL4 PRIMARY KEY,
-  user_id VARCHAR(200),
-  industry_id VARCHAR(200)
+  user_id INTEGER,
+  industry_id INTEGER
 );
 
 CREATE TABLE introductions
@@ -74,6 +90,7 @@ CREATE TABLE introductions
   user_id VARCHAR(500),
   connection_id VARCHAR(500), -- id of the user connected
   response VARCHAR(500),
+  connection_date DATE,
   created_at,
   updated_at
 );

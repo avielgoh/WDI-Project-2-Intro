@@ -1,2 +1,3 @@
-class Industry < ActiveRecord::Base
+class Connection < ActiveRecord::Base
+  
 end
