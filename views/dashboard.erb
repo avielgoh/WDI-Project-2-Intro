@@ -40,7 +40,7 @@
 <br>
   <div class="row">
     <div class="col-xs-2 col-xs-offset-1">
-      <img src="https://media.licdn.com/mpr/mpr/shrinknp_180_180/p/3/000/273/2eb/16a4d44.jpg" alt="..." class="img-circle">
+      <img src="http://www.placehold.it/180x180" alt="..." class="img-circle">
     </div>
 
     <div class="col-xs-8">
@@ -63,7 +63,7 @@
             <% end %>
 
             <dt>Industry: </dt>
-            <dd><%= @user.current_industry %></dd>
+            <dd><%= @user.industry.name %></dd>
             <dt>Location: </dt>
             <dd><%= @location.city %>, <%= @location.country %></dd>
           </dl>
@@ -92,30 +92,22 @@
               <th>Rate</th>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Jane Doe</td>
-                <td>Entreprenuer</td>
-                <td>15 Nov 2015</td>
-                <td>
-                  <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                    <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
-                    <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Sarah Smith</td>
-                <td>Corporate</td>
-                <td>15 Oct 2015</td>
-                <td>
-                  <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                    <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
-                    <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button>
-                  </div>
-                </td>
-              </tr>
+              <% count = 1 %>
+                <% @user.introductions.each do |connection| %>
+                  <tr>
+                    <th scope="row"><%= count %></th>
+                    <td><%= @all_users.find(connection.connection_id).first_name %> <%= @all_users.find(connection.connection_id).last_name %></td>
+                    <td><%= @all_users.find(connection.connection_id).industry.name %></td>
+                    <td><%= connection.connection_date%></td>
+                    <td>
+                      <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
+                        <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button>
+                      </div>
+                    </td>
+                  </tr>
+                <% count = count + 1 %>
+              <% end %>
             </tbody>
           </table>
         </div>

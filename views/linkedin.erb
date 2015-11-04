@@ -1,0 +1,11 @@
+LinkedIn.configure do |config|
+  config.client_id     = ENV["75jsg810muljov"]
+  config.client_secret = ENV["f7x2sH9g0aSlG08x"]
+  config.redirect_uri  = "http://localhost:4567/linkedin"
+end
+
+LinkedIn::OAuth2.new('75jsg810muljov','f7x2sH9g0aSlG08x')
+
+https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=75jsg810muljov&redirect_uri=http://localhost:4567/linkedin&state=987654321&scope=r_basicprofile
+
+https://www.linkedin.com/uas/oauth2/grant_type=authorization_code&code=AQSMoyxL1Plav8h9cFEvSkhMv9DSxJa1JXHaAfNefwdVWZGpk-JnxfdxfnYjpQAWsGuwrjb_d3-wJAfNskTJ54mdWJDsmxG7h382T6HHn2g4_DL3jbg&redirect_uri=http://localhost:4567/linkedin&client_id=75jsg810muljov&client_secret=f7x2sH9g0aSlG08x

@@ -7,9 +7,9 @@ require 'pg'
 require_relative 'db_config'
 require_relative 'models/user'
 require_relative 'models/industry'
-require_relative 'models/interest'
+require_relative 'models/industry_user'
 require_relative 'models/location'
-require_relative 'models/connection'
+require_relative 'models/introduction'
 
 enable :sessions # for the purposes of the user password
 
@@ -36,14 +36,17 @@ get '/' do
 end
 
 get '/signup' do
+  if logged_in?
+    redirect to '/dashboard'
+  end
   @locations = Location.all
   @industries = Industry.all
 
   erb :signup
 end
 
-post '/signup/register' do
-
+post '/signup' do
+  # create new user
   @user = User.new
   @user.first_name = params[:first_name]
   @user.last_name = params[:last_name]
@@ -51,24 +54,29 @@ post '/signup/register' do
   @user.password = params[:password]
   @user.linkedin_url = params[:linkedin_url]
   @user.personal_url = params[:personal_url]
-  @user.current_industry = params[:current_industry]
+  @user.industry_id = params[:current_industry]
   @user.location_id = params[:location]
   @user.accept_terms = params[:accept_terms]
   @user.save
 
-  redirect to '/signup/preferences'
-end
+  @interests =  params[:interested_industries][:preferences]
 
-get '/signup/preferences' do
+  @interests.each do |industry_id|
+    @user.interested_industries << Industry.find(industry_id)
+  end
 
-  @industries = Industry.all
-
-  erb :preferences
+  redirect to '/login'
 end
 
 # ----- AUTHENTICATION -----
 
 get '/login' do
+  @locations = Location.all
+  @industries = Industry.all
+  # if logged in, redirect to dashboard
+  if logged_in?
+    redirect to '/dashboard'
+  end
   erb :login
 end
 
@@ -97,19 +105,20 @@ end
 
 get '/dashboard' do
   redirect to '/login' unless logged_in?
-
+  @all_users = User.all
   @user = User.find_by(id: session[:user_id])
   @location = @user.location
+  @introduction = Introduction.all
 
   erb :dashboard
 end
 
 get '/profile/edit' do
   redirect to '/login' unless logged_in?
+  @all_users = User.all
   @user = User.find_by(id: session[:user_id])
   @locations = Location.all
   @industries = Industry.all
-  @interests = Interest.all
 
   erb :profile
 end
@@ -122,17 +131,24 @@ post '/profile/update' do
   @user.email = params[:email]
   @user.linkedin_url = params[:linkedin_url]
   @user.personal_url = params[:personal_url]
-  @user.current_industry = params[:current_industry]
+  @user.industry_id = params[:current_industry]
   @user.location_id = params[:location]
   @user.save
-  redirect to 'profile/edit'
+
+  @interests =  params[:interested_industries][:preferences]
+
+  # only adds interest if not already included
+  @interests.each do |industry_id|
+    @user.interested_industries << Industry.find(industry_id) unless @user.interested_industries.include? (Industry.find(industry_id))
+  end
+
+  redirect to '/dashboard'
 end
 
 get '/admin/settings' do
   @user = User.find_by(id: session[:user_id])
   @locations = Location.all
   @industries = Industry.all
-  @interests = Interest.all
   erb :admin_settings
 end
 
@@ -164,10 +180,72 @@ delete '/admin/settings/edit_industry' do
 end
 
 get '/admin/dashboard' do
+  @all_users = User.all
   @user = User.find_by(id: session[:user_id])
   @locations = Location.all
   @industries = Industry.all
-  @interests = Interest.all
+  @potential_introductions = []
+  @selection = "Select a user"
+  erb :admin_dashboard
+end
+
+post '/admin/search' do
+  @selected_user = params[:selected_user]
+
+  redirect to "/admin/search/#{ @selected_user }"
+end
+
+get '/admin/search/:user_id' do
+  @user_id = params[:user_id].to_i
+  @selection = "#{ User.find(@user_id).first_name } #{ User.find(@user_id).last_name }"
+
+  # get industries the selected user is interested in
+  @interested_industries = [] # array of industry id's
+  User.find(@user_id).interested_industries.each do |industry|
+    @interested_industries << industry.id
+  end
+
+  # get users in the industries the selected user is interested in
+  @interested_industries_users = [] # array of user id's
+  @interested_industries.each do |id|
+    Industry.find(id).interested_users.each do |user|
+      @interested_industries_users << user.id
+    end
+  end
+
+  # filter for unique id's and id of the selected user
+  @distinct_interested_industries_users = []
+  @interested_industries_users.uniq.each do |id|
+    if id != @user_id
+      @distinct_interested_industries_users << id
+    end
+  end
+
+  # check that users are interested in the industry the selected user is in
+  @potential_introductions = []
+  @distinct_interested_industries_users.each do |id|
+    User.find(id).interested_industries.each do |industry|
+      if industry.id == @user_id
+        @potential_introductions << id
+      end
+    end
+  end
+
+  erb :admin_dashboard
+end
+
+post '/admin/introduction' do
+  @selected_user = params[:current_user]
+  binding.pry
+
+  redirect to "/admin/introduction/#{ @selected_user }"
+end
+
+get '/admin/introduction/:user_id' do
+  @user_id = params[:user_id].to_i
+  @connection_id = params[:introduce_user].to_i
+
+
   erb :admin_dashboard
 end
 
@@ -176,7 +254,6 @@ get '/fixup' do
   @user = User.find_by(id: session[:user_id])
   @locations = Location.all
   @industries = Industry.all
-  @interests = Interest.all
   erb :fixup
 end
 

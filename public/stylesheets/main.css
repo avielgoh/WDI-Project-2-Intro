@@ -1,5 +1,6 @@
 body {
-  padding-top: 50px;
+  margin-top: 55px;
+
 }
 
 .home-steps-image {
@@ -13,14 +14,19 @@ body {
   top: 0px;
 }
 
-.jumbotron {
-  height: 550px;
+
+.navbar-default {
+
+}
+#landing {
+  height: 675px;
+  background: none;
 }
 
 .btn:focus {
   outline: 0;
 }
 
-.navbar {
-  background-color: white;
+#panel {
+  padding: 0;
 }

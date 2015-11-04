@@ -10,13 +10,15 @@ CREATE TABLE users
   password_digest VARCHAR(500) NOT NULL,
   linkedin_url VARCHAR(2500) NOT NULL,
   personal_url VARCHAR(2500),
-  current_industry VARCHAR(500),
+  industry_id INTEGER,
   location_id INTEGER,
   admin BOOLEAN,
   accept_terms VARCHAR(50)
 );
 
-INSERT INTO users (first_name, last_name, email, password_digest, linkedin_url, personal_url, current_industry, location_id) VALUES ('Aviel', 'Goh', 'avielgwk@gmail.com', 'avielgoh', 'https://au.linkedin.com/in/avielgoh', 'http://avielgoh.com/', "Software Development", 2);
+INSERT INTO users (first_name, last_name, email, password_digest, linkedin_url, personal_url, industry_id, location_id) VALUES ('Aviel', 'Goh', 'avielgwk@gmail.com', 'avielgoh', 'https://au.linkedin.com/in/avielgoh', 'http://avielgoh.com/', 2, 2);
+
+INSERT INTO users (first_name, last_name, email, password_digest, linkedin_url, personal_url, industry_id, location_id) VALUES ('John', 'Smith', 'avielgwk@gmail.com', 'avielgoh', 'https://au.linkedin.com/in/avielgoh', 'http://avielgoh.com/', 2, 2);
 
 CREATE TABLE locations
 (
@@ -69,15 +71,8 @@ INSERT INTO industries (name) VALUES ('Other');
 -- Consulting
 -- Other
 
-CREATE TABLE interests
-(
-  id SERIAL4 PRIMARY KEY,
-  user_id INTEGER,
-  industry_id INTEGER
-);
 
-
-CREATE TABLE industries_users
+CREATE TABLE industry_users
 (
   id SERIAL4 PRIMARY KEY,
   user_id INTEGER,
@@ -87,10 +82,12 @@ CREATE TABLE industries_users
 CREATE TABLE introductions
 (
   id SERIAL4 PRIMARY KEY,
-  user_id VARCHAR(500),
-  connection_id VARCHAR(500), -- id of the user connected
-  response VARCHAR(500),
-  connection_date DATE,
-  created_at,
-  updated_at
+  user_id INTEGER,
+  connection_id INTEGER,
+  connection_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  response BOOLEAN
 );
+
+INSERT INTO introductions (user_id, connection_id) VALUES (1, 2);
+
+INSERT INTO introductions (user_id, connection_id) VALUES (1, 3);
