@@ -1,7 +1,7 @@
 body {
  padding-top: 50px;
  padding-bottom: 20px;
- color: #5a5a5a;
+ color: rgb(60, 60, 60);
  font-family: 'Raleway', sans-serif;
 }
 
@@ -9,14 +9,14 @@ body {
   background-color: white;
 }
 
-.navbar-btn {
-  color: #5a5a5a;
+.logo {
+  height: 48px;
+  position: fixed;
+  top: 0;
 }
 
-.logo {
-  height: 55px;
-  position: fixed;
-  top: 0px;
+.navbar-btn {
+  color: rgb(60, 60, 60);
 }
 
 .page-header {
@@ -26,7 +26,7 @@ body {
 .landing-page {
   height: 680px;
   width: 100%;
-  background-image: url(../images/background.png);
+  background-image: url(../images/background-small.jpg);
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
@@ -40,12 +40,28 @@ body {
 }
 
 .marketing-image {
-  border: 1px solid #5a5a5a;
-  padding: 12px;
+  border: 1px solid rgb(60, 60, 60);
+  padding: 8px;
 }
 
 .profile-picture {
   margin-bottom: 5%;
+}
+
+label {
+  margin-top: 5px;
+}
+
+.signup-preferences {
+  font-weight: normal;
+}
+
+.signup-previous {
+  margin: 4px;
+}
+
+.preference-box {
+  margin: 0;
 }
 
 .btn:focus {
@@ -57,13 +73,13 @@ body {
   padding: 0;
 }
 
-/* MARKETING CONTENT
--------------------------------------------------- */
-
-/* Center align the text within the three columns below the carousel */
+/* ----- MARKETING ----- */
 
 .marketing {
-  padding-top: 100px;
+  padding-top: 120px;
+}
+
+.marketing p {
   padding-bottom: 75px;
 }
 .marketing .col-lg-4 {
@@ -79,16 +95,8 @@ body {
   font-size: 16px;
 }
 
-/* Featurettes
-------------------------- */
+/* ----- FOOTER ----- */
 
-.featurette-divider {
-  margin: 30px 0; /* Space out the Bootstrap <hr> more */
-}
-
-/* Thin out the marketing headings */
-.featurette-heading {
-  font-weight: 300;
-  line-height: 1;
-  letter-spacing: -1px;
+.footer {
+  color: rgb(150, 150, 150);
 }

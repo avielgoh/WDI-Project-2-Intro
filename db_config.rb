@@ -1,10 +1,8 @@
-# require 'carrierwave'
-require 'active_record' # require Ruby Gem
+require 'active_record'
 
 options = {
   adapter: 'postgresql',
   database: 'heyintro'
 }
 
-# establish connection to the db based on the options above
-ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || options)
+ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || options) # establish connection Heroku
