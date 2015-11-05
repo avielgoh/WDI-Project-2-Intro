@@ -5,9 +5,14 @@ body {
  font-family: 'Raleway', sans-serif;
 }
 
+@media (max-width: 980px) {
+  body {
+    padding-top: 0;
+  }
+}
+
 .navbar {
   background-color: white;
-  margin-bottom: 0;
 }
 
 .logo {
@@ -29,9 +34,8 @@ body {
   width: 100%;
   background-image: url(../images/background-small.jpg);
   background-size: cover;
-  background-repeat: no-repeat;
   background-attachment: fixed;
-  background-position: top center;
+  background-position: center;
   color: white;
   background-color: white;
 }
