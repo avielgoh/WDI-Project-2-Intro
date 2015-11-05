@@ -1,6 +1,6 @@
-require 'pry'
+
 require 'sinatra'
-require 'sinatra/reloader'
+
 require 'pg'
 
 # PostgreSQL database links
