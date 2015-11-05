@@ -12,8 +12,8 @@ CREATE TABLE users
   personal_url VARCHAR(2500),
   industry_id INTEGER,
   location_id INTEGER,
-  date_joined DATE NOT NULL DEFAULT CURRENT_DATE
-  administrator BOOLEAN,
+  date_joined DATE NOT NULL DEFAULT CURRENT_DATE,
+  administrator BOOLEAN
 );
 
 CREATE TABLE locations

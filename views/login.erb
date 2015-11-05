@@ -62,25 +62,25 @@
     <div role="tabpanel" class="tab-pane fade in" id="signup"> <!-- Sign up - part 1 -->
         <form role="form" class="form-horizontal" action="/signup" method="post">
           <div class="form-group">
-            <div class="col-xs-5 col-xs-offset-1 col-sm-4 col-sm-offset-2  col-md-2 col-md-offset-4"><label class="sr-only">First name</label><input type="text" class="form-control" name="first_name" placeholder="First name"></div>
-            <div class="col-xs-5 col-sm-4 col-md-2"><label class="sr-only">Last name</label><input type="text" class="form-control" name="last_name" placeholder="Last name"></div>
+            <div class="col-xs-5 col-xs-offset-1 col-sm-4 col-sm-offset-2  col-md-2 col-md-offset-4"><label class="sr-only">First name</label><input type="text" class="form-control" name="first_name" placeholder="First name" required></div>
+            <div class="col-xs-5 col-sm-4 col-md-2"><label class="sr-only">Last name</label><input type="text" class="form-control" name="last_name" placeholder="Last name" required ></div>
           </div>
           <div class="form-group">
             <label class="sr-only" for="input_email">Email</label>
             <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
-              <input type="email" class="form-control" name="email" placeholder="Email">
+              <input type="email" class="form-control" name="email" placeholder="Email" required>
             </div>
           </div>
           <div class="form-group">
             <label class="sr-only" for="input_password">Password</label>
             <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
-              <input type="password" class="form-control" name="password" placeholder="Password">
+              <input type="password" class="form-control" name="password" placeholder="Password" required>
             </div>
           </div>
           <div class="form-group">
             <label class="sr-only" for="input_linkedin">LinkedIn profile</label>
             <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
-              <input type="url" class="form-control" name="linkedin_url" placeholder="LinkedIn profile link">
+              <input type="url" class="form-control" name="linkedin_url" placeholder="LinkedIn profile link" required>
             </div>
           </div>
           <div class="form-group">
@@ -91,7 +91,7 @@
           </div>
           <div class="form-group">
             <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
-              <select class="form-control" name="current_industry">
+              <select class="form-control" name="current_industry" required>
                 <option selected disabled>What industry are you in?</option>
                 <% @industries.each do |industry| %>
                   <option value="<%= industry.id %>"> <%= industry.name %> </option>
@@ -101,7 +101,7 @@
           </div>
           <div class="form-group">
             <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
-              <select class="form-control" name="location">
+              <select class="form-control" name="location" required>
                 <option selected disabled>Where do you live?</option>
                 <% @locations.each do |location| %>
                   <option value="<%= location.id %>"> <%= location.city %>, <%= location.country %>  </option>
@@ -110,19 +110,26 @@
             </div>
           </div>
           <div class="form-group"> <!-- Triggers tab change to sign up - part 2-->
-            <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
-              <a class="btn btn-primary btn-block" href="#signup2" aria-controls="signup2" role="tab" data-toggle="tab">Next</a>
-            </div>
+            <nav class="text-left col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+              <ul class="pager signup-previous" role="tablist">
+                <li role="presentation" class="next"><a href="#signup2" aria-controls="signup2" role="tab" data-toggle="tab">Next <span aria-hidden="true">&rarr;</span></a></li>
+              </ul>
+            </nav>
           </div>
-    </div>
-    <div role="tabpanel" class="tab-pane fade" id="signup2"> <!-- Sign up - part 2 -->
+        </div>
+      <div role="tabpanel" class="tab-pane fade" id="signup2"> <!-- Sign up - part 2 -->
         <div class="form-group">
-          <label class="text-left col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4" for="interested_industries"><h4>Industries you would like to introduced to people from:</h4></label>
+          <nav class="text-left col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+            <ul class="pager signup-previous" role="tablist">
+              <li role="presentation" class="previous"><a href="#signup" aria-controls="signup" role="tab" data-toggle="tab"><span aria-hidden="true">&larr;</span> Previous</a></li>
+            </ul>
+          </nav>
+          <label class="text-left col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4" for="interested_industries"><p>Industries you would like to introduced to people from:</p></label>
           <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
-            <div class="panel panel-default">
+            <div class="panel panel-default preference-box">
               <div class="panel-body">
                 <% @industries.each do |industry| %>
-                  <label class="checkbox col-xs-6 col-sm-6 col-md-6">
+                  <label class="checkbox col-xs-6 col-sm-6 col-md-6 signup-preferences">
                     <input type="checkbox" name="interested_industries[preferences][]" value="<%= industry.id %>"> <%= industry.name %>
                   </label>
                 <% end %>
@@ -131,8 +138,8 @@
           </div>
         </div>
         <div class="form-group">
-          <div class="checkbox col-xs-10 col-xs-offset-1  col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
-            <label><input type="checkbox" required> I agree for my personal details to be shared during introductions.</label>
+          <div class="checkbox col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+            <label><input type="checkbox" required> I agree for my contact details to be shared during introductions.</label>
           </div>
         </div>
         <div class="form-group">
