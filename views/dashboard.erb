@@ -13,7 +13,7 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav navbar-right text-center">
         <li>
           <form class="" action="/session" method="post">
             <input type="hidden" name="_method" value="delete">
@@ -30,23 +30,23 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-xs-10 col-xs-offset-1">
+    <div class="col-md-10 col-md-offset-1">
       <ul class="nav nav-tabs">
         <li role="presentation" class="active"><a href="/dashboard"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Dashboard</a></li>
-        <li role="presentation"><a href="/profile/edit"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
+        <li role="presentation"><a href="/profile/edit"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Edit profile</a></li>
       </ul>
     </div>
   </div>
 <br>
   <div class="row">
-    <div class="col-xs-2 col-xs-offset-1">
-      <img src="http://www.placehold.it/180x180" alt="..." class="img-circle">
+    <div class="col-xs-offset-4 col-sm-3 col-md-2 col-md-offset-1">
+      <img src="http://www.placehold.it/180x180" alt="..." class="img-circle img-responsive profile-picture">
     </div>
 
-    <div class="col-xs-8">
+    <div class="col-xs-10 col-sm-9 col-md-8">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title pull-left">Welcome back, <%= @user.first_name %>!</h3>
+          <h3 class="panel-title pull-left">Hi there, <%= @user.first_name %>!</h3>
           <button class="btn btn-default btn-xs pull-right"><a href="/profile/edit">Edit</a></button>
           <div class="clearfix"></div>
         </div>
@@ -80,7 +80,7 @@
     <div class="col-xs-8">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Your previous intros</h3>
+          <h3 class="panel-title">Your previous introductions</h3>
         </div>
         <div class="panel-body">
           <table class="table table-hover">
@@ -100,10 +100,22 @@
                     <td><%= @all_users.find(connection.connection_id).industry.name %></td>
                     <td><%= connection.connection_date%></td>
                     <td>
-                      <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                        <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
-                        <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button>
-                      </div>
+                      <% if Introduction.find(connection.id.to_i).rating == true %>
+                        <button class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
+                      <% elsif Introduction.find(connection.id.to_i).rating == false %>
+                        <button class="btn btn-default"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button>
+                      <% else %>
+                        <div class="btn-toolbar" role="toolbar" aria-label="...">
+                          <form class="" action="/dashboard/thumbs_up" method="post">
+                            <input type="hidden" name="connection_id" value="<%= connection.id %>">
+                            <button class="btn btn-default btn-group"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
+                          </form>
+                          <form class="" action="/dashboard/thumbs_down" method="post">
+                            <input type="hidden" name="connection_id" value="<%= connection.id %>">
+                            <button class="btn btn-default btn-group"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button>
+                          </form>
+                        </div>
+                      <% end %>
                     </td>
                   </tr>
                 <% count = count + 1 %>

@@ -85,9 +85,9 @@ CREATE TABLE introductions
   user_id INTEGER,
   connection_id INTEGER,
   connection_date DATE NOT NULL DEFAULT CURRENT_DATE,
-  response BOOLEAN
+  rating BOOLEAN
 );
 
-INSERT INTO introductions (user_id, connection_id) VALUES (1, 2);
+INSERT INTO introductions (user_id, connection_id, response) VALUES (1, 2, true);
 
 INSERT INTO introductions (user_id, connection_id) VALUES (1, 3);

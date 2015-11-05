@@ -235,18 +235,47 @@ get '/admin/search/:user_id' do
 end
 
 post '/admin/introduction' do
-  @selected_user = params[:current_user]
-  binding.pry
+  @selected_user = params[:current_user].to_i
 
-  redirect to "/admin/introduction/#{ @selected_user }"
+  # log introduction of current user to introduce user
+  @introduction = Introduction.new
+  @introduction.user_id = params[:current_user].to_i
+  @introduction.connection_id = params[:introduce_user].to_i
+  @introduction.save
+
+  # log introduction of current user to introduce user
+  @introduction = Introduction.new
+  @introduction.user_id = params[:introduce_user].to_i
+  @introduction.connection_id = params[:current_user].to_i
+  @introduction.save
+
+  redirect to "/admin/dashboard"
 end
 
 get '/admin/introduction/:user_id' do
   @user_id = params[:user_id].to_i
   @connection_id = params[:introduce_user].to_i
 
-
   erb :admin_dashboard
+end
+
+post '/dashboard/thumbs_up' do
+  @connection_id = params[:connection_id].to_i
+  @introduction = Introduction.find(@connection_id)
+  @introduction.rating = true
+  @introduction.save
+
+  redirect to '/dashboard'
+end
+
+post '/dashboard/thumbs_down' do
+  @connection_id = params[:connection_id].to_i
+  @introduction = Introduction.find(@connection_id)
+
+  @introduction.rating = false
+  @introduction.save
+
+  redirect to '/dashboard'
 end
 
 get '/fixup' do

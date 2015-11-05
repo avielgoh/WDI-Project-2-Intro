@@ -13,7 +13,7 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav navbar-right text-center">
         <li>
           <form class="" action="/session" method="post">
             <input type="hidden" name="_method" value="delete">
@@ -57,34 +57,44 @@
         </form>
       </div>
     <br>
-    <div class="row">
-      <table class="table table-hover">
-        <thead>
-          <th>#</th>
-          <th>Name</th>
-          <th>Industry</th>
-          <th>Email</th>
-          <th>LinkedIn</th>
-        </thead>
-        <tbody>
-          <% @potential_introductions.each do |id| %>
-            <% @introduction = User.find(id)%>
-              <tr>
-                <th scope="row">
-                  <div class="radio" style="vertical-align: middle; margin: 0px;">
-                    <label>
-                      <input type="radio" name="introduce_user" value="<%= @introduction.id %>">
-                    </label>
-                  </div>
-                </th>
-                <td><%= @introduction.first_name %> <%= @introduction.last_name %></td>
-                <td><%= Industry.find(@introduction.industry_id).name %></td>
-                <td><%= @introduction.email %></td>
-                <td><%= @introduction.linkedin_url %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+      <div class="row">
+        <table class="table table-hover">
+          <thead>
+            <th>#</th>
+            <th>Name</th>
+            <th>Industry</th>
+            <th>Email</th>
+            <th>LinkedIn</th>
+          </thead>
+          <tbody>
+            <form role="form" class="form-horizontal" action="/admin/introduction" method="post">
+              <input type="hidden" name="current_user" value="<%= @user_id%>">
+              <% @potential_introductions.each do |id| %>
+                <% @introduction = User.find(id)%>
+                  <tr>
+                    <th scope="row">
+                      <div class="radio" style="vertical-align: middle; margin: 0px;">
+                        <label>
+                          <input type="radio" name="introduce_user" value="<%= @introduction.id %>">
+                        </label>
+                      </div>
+                    </th>
+                    <td><%= @introduction.first_name %> <%= @introduction.last_name %></td>
+                    <td><%= Industry.find(@introduction.industry_id).name %></td>
+                    <td><%= @introduction.email %></td>
+                    <td><%= @introduction.linkedin_url %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <div class="row">
+            <div class="form-group">
+              <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+                <button type="submit" class="btn btn-primary btn-block">Introduce</button>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>
