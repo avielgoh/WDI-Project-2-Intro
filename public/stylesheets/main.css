@@ -9,6 +9,16 @@ body {
   body {
     padding-top: 0;
   }
+  .landing-page {
+    height: 680px;
+    width: 100%;
+    background-image: url(../images/background-small.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    color: white;
+    background-color: white;
+  }
 }
 
 .navbar {
