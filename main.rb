@@ -1,6 +1,8 @@
-
+# REMOVE FOR DEPLOYMENT
+# require 'sinatra/reloader'
+# require 'pry'
+# ----------------------
 require 'sinatra'
-
 require 'pg'
 
 # PostgreSQL database links
@@ -11,7 +13,7 @@ require_relative 'models/industry_user'
 require_relative 'models/location'
 require_relative 'models/introduction'
 
-enable :sessions # for the purposes of the user password
+enable :sessions # keep track of user when logged in
 
 # close connection with ActiveRecord
 after do
@@ -28,25 +30,38 @@ helpers do
     !!current_user # returns back a boolean
   end
 
+  def all_information
+    @locations = Location.all
+    @industries = Industry.all
+    @all_users = User.all
+    @introduction = Introduction.all
+  end
+
 end
 
-
+# HOME PAGE
 get '/' do
   erb :index
 end
 
+# ----- REGISTRATION -----
+
+# SIGN UP PAGE
 get '/signup' do
+  # get info for drop down fields
+  all_information # call helper
+
+  # redirect user to their dashboard if logged in
   if logged_in?
     redirect to '/dashboard'
   end
-  @locations = Location.all
-  @industries = Industry.all
 
   erb :signup
 end
 
+# save information of new registration
 post '/signup' do
-  # create new user
+  # save details of new user from params
   @user = User.new
   @user.first_name = params[:first_name]
   @user.last_name = params[:last_name]
@@ -56,11 +71,10 @@ post '/signup' do
   @user.personal_url = params[:personal_url]
   @user.industry_id = params[:current_industry]
   @user.location_id = params[:location]
-  @user.accept_terms = params[:accept_terms]
   @user.save
 
+  # save interested industries of new user from checkboxes
   @interests =  params[:interested_industries][:preferences]
-
   @interests.each do |industry_id|
     @user.interested_industries << Industry.find(industry_id)
   end
@@ -68,61 +82,85 @@ post '/signup' do
   redirect to '/login'
 end
 
-# ----- AUTHENTICATION -----
+# --- AUTHENTICATION ---
 
+# LOGIN PAGE
 get '/login' do
-  @locations = Location.all
-  @industries = Industry.all
-  # if logged in, redirect to dashboard
+  # get info for drop down fields
+  all_information # call helper
+
+  # redirect user to their dashboard if logged in
   if logged_in?
     redirect to '/dashboard'
   end
+
   erb :login
 end
 
-# creating a session
+# create new user session
 post '/session' do
-
   user = User.find_by(email: params[:email]) # identify user by email address
 
-  if user && user.authenticate(params[:password]) # if find user and correct password
-    # yay
-    # create the session
+  # create new session if user and password match
+  if user && user.authenticate(params[:password])
     session[:user_id] = user.id
     redirect to '/dashboard'
   else
     redirect to '/login'
   end
-
 end
 
-# logout
+# delete session when user logs out
 delete '/session' do
-  # clear session
   session[:user_id] = nil
   redirect to '/'
 end
 
+# --- USER PAGES ---
+
+# display user dashboard
 get '/dashboard' do
-  redirect to '/login' unless logged_in?
-  @all_users = User.all
+  redirect to '/login' unless logged_in? # redirect to login if not logged in
+
+  all_information # call helper
   @user = User.find_by(id: session[:user_id])
   @location = @user.location
-  @introduction = Introduction.all
 
   erb :dashboard
 end
 
+# give connection a good rating
+post '/dashboard/thumbs_up' do
+  @connection_id = params[:connection_id].to_i
+  @introduction = Introduction.find(@connection_id)
+  @introduction.rating = true
+  @introduction.save
+
+  redirect to '/dashboard'
+end
+
+# give connection a bad rating
+post '/dashboard/thumbs_down' do
+  @connection_id = params[:connection_id].to_i
+  @introduction = Introduction.find(@connection_id)
+
+  @introduction.rating = false
+  @introduction.save
+
+  redirect to '/dashboard'
+end
+
+# display edit profile
 get '/profile/edit' do
   redirect to '/login' unless logged_in?
-  @all_users = User.all
+
+  all_information # call helper
   @user = User.find_by(id: session[:user_id])
-  @locations = Location.all
-  @industries = Industry.all
 
   erb :profile
 end
 
+# update user profile
 post '/profile/update' do
   redirect to '/login' unless logged_in?
   @user = User.find_by(id: session[:user_id])
@@ -135,9 +173,8 @@ post '/profile/update' do
   @user.location_id = params[:location]
   @user.save
 
+  # only add interest if not previously an interest
   @interests =  params[:interested_industries][:preferences]
-
-  # only adds interest if not already included
   @interests.each do |industry_id|
     @user.interested_industries << Industry.find(industry_id) unless @user.interested_industries.include? (Industry.find(industry_id))
   end
@@ -145,13 +182,38 @@ post '/profile/update' do
   redirect to '/dashboard'
 end
 
-get '/admin/settings' do
+# unsubscribe and delete user
+delete '/unsubscribe' do
+  all_information # call helper
   @user = User.find_by(id: session[:user_id])
-  @locations = Location.all
-  @industries = Industry.all
+  @email = params[:email]
+
+  # user must confirm email before unsubscribing
+  if @user.email == @email
+    @introduction.each do |intro|
+      if intro.user_id == @user.id.to_i || intro.connection_id == @user.id.to_i
+        intro.destroy
+      end
+    end
+    @user.destroy
+    redirect to '/'
+  else
+    redirect to '/dashboard'
+  end
+
+end
+
+
+# --- ADMINISTRATOR PAGES ---
+
+# display settings
+get '/admin/settings' do
+  all_information # call helper
+  @user = User.find_by(id: session[:user_id])
   erb :admin_settings
 end
 
+# create new locations
 post '/admin/settings/edit_location' do
   @location = Location.new
   @location.city = params[:city]
@@ -160,12 +222,13 @@ post '/admin/settings/edit_location' do
   redirect to '/admin/settings'
 end
 
+# delete location
 delete '/admin/settings/edit_location' do
   Location.find(params[:location]).destroy
-
   redirect to '/admin/settings'
 end
 
+# create new industry
 post '/admin/settings/edit_industry' do
   @industry = Industry.new
   @industry.name = params[:industry]
@@ -173,28 +236,30 @@ post '/admin/settings/edit_industry' do
   redirect to '/admin/settings'
 end
 
+# delete industry
 delete '/admin/settings/edit_industry' do
   Industry.find_by(name: params[:industry]).destroy
-
   redirect to '/admin/settings'
 end
 
+# display introductions dashboard
 get '/admin/dashboard' do
-  @all_users = User.all
+  all_information # call helper
   @user = User.find_by(id: session[:user_id])
-  @locations = Location.all
-  @industries = Industry.all
+
   @potential_introductions = []
   @selection = "Select a user"
+
   erb :admin_dashboard
 end
 
+# initiate by user
 post '/admin/search' do
   @selected_user = params[:selected_user]
-
   redirect to "/admin/search/#{ @selected_user }"
 end
 
+# return potential introductions for user selected
 get '/admin/search/:user_id' do
   @user_id = params[:user_id].to_i
   @selection = "#{ User.find(@user_id).first_name } #{ User.find(@user_id).last_name }"
@@ -234,6 +299,14 @@ get '/admin/search/:user_id' do
   erb :admin_dashboard
 end
 
+# get '/admin/introduction/:user_id' do
+#   @user_id = params[:user_id].to_i
+#   @connection_id = params[:introduce_user].to_i
+#
+#   erb :admin_dashboard
+# end
+
+# create a new introduction
 post '/admin/introduction' do
   @selected_user = params[:current_user].to_i
 
@@ -252,52 +325,7 @@ post '/admin/introduction' do
   redirect to "/admin/dashboard"
 end
 
-get '/admin/introduction/:user_id' do
-  @user_id = params[:user_id].to_i
-  @connection_id = params[:introduce_user].to_i
-
-  erb :admin_dashboard
-end
-
-post '/dashboard/thumbs_up' do
-  @connection_id = params[:connection_id].to_i
-  @introduction = Introduction.find(@connection_id)
-  @introduction.rating = true
-  @introduction.save
-
-  redirect to '/dashboard'
-end
-
-post '/dashboard/thumbs_down' do
-  @connection_id = params[:connection_id].to_i
-  @introduction = Introduction.find(@connection_id)
-
-  @introduction.rating = false
-  @introduction.save
-
-  redirect to '/dashboard'
-end
-
-get '/fixup' do
-
-  @user = User.find_by(id: session[:user_id])
-  @locations = Location.all
-  @industries = Industry.all
-  erb :fixup
-end
-
+# PAGE STILL TO BE CREATED
 get '/faq' do
   erb :faq
-end
-
-get '/linkedin' do
-  erb :linkedin
-end
-
-get '/feed' do
-  erb :feed
-end
-
-get '/about' do
-  erb :about
 end
