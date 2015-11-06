@@ -1,6 +1,6 @@
 # REMOVE FOR DEPLOYMENT
-# require 'sinatra/reloader'
-# require 'pry'
+require 'sinatra/reloader'
+require 'pry'
 # ----------------------
 require 'sinatra'
 require 'pg'
@@ -300,28 +300,28 @@ get '/admin/search/:user_id' do
     end
   end
 
-  # check whether the user has previously been matched to the potential introduction
-  @curated_introductions = []
-  @potential_introductions.each do |id|
-    @introductions.each do |intro|
-      if (intro.user_id == @user_id && intro.connection_id == id) || (intro.user_id == id && intro.connection_id == @user_id)
-      else
-        @curated_introductions << id
-      end
+  # check users' exiting matches
+  @existing_introductions = [] # array os user id's
+  @introductions.each do |intro|
+    if intro.user_id == @user_id
+      @existing_introductions << intro.connection_id
     end
   end
 
-  @display_introductions = @curated_introductions.uniq
+  # remove existing matches from potential introductions
+  @curated_introductions = @potential_introductions - @existing_introductions
+
+  # remove duplicates and administrators
+  @display_introductions = []
+  @curated_introductions.uniq.each do |id|
+    if User.find(id).administrator == true
+    else
+      @display_introductions << id
+    end
+  end
 
   erb :admin_dashboard
 end
-
-# get '/admin/introduction/:user_id' do
-#   @user_id = params[:user_id].to_i
-#   @connection_id = params[:introduce_user].to_i
-#
-#   erb :admin_dashboard
-# end
 
 # create a new introduction
 post '/admin/introduction' do
@@ -342,7 +342,7 @@ post '/admin/introduction' do
   redirect to "/admin/dashboard"
 end
 
-# PAGE STILL TO BE CREATED
+### PAGE STILL TO BE CREATED ###
 get '/faq' do
   erb :faq
 end
