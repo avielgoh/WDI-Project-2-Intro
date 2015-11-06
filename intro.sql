@@ -6,7 +6,7 @@ CREATE TABLE users
   id SERIAL4 PRIMARY KEY,
   first_name VARCHAR(500),
   last_name VARCHAR(500),
-  email VARCHAR(500) NOT NULL,
+  email VARCHAR(500),
   password_digest VARCHAR(500),
   linkedin_url VARCHAR(2500),
   personal_url VARCHAR(2500),
@@ -16,11 +16,12 @@ CREATE TABLE users
   administrator BOOLEAN
 );
 
+
 CREATE TABLE locations
 (
   id SERIAL4 PRIMARY KEY,
-  city VARCHAR(500) NOT NULL,
-  country VARCHAR(500) NOT NULL
+  city VARCHAR(500),
+  country VARCHAR(500)
 );
 
 INSERT INTO locations (city, country) VALUES ('Melbourne', 'Australia');
@@ -32,7 +33,7 @@ INSERT INTO locations (city, country) VALUES ('Adelaide', 'Australia');
 CREATE TABLE industries
 (
   id SERIAL4 PRIMARY KEY,
-  name VARCHAR(500) NOT NULL
+  name VARCHAR(500)
 );
 
 INSERT INTO industries (name) VALUES ('Accounting');

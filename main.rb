@@ -1,6 +1,6 @@
 # REMOVE FOR DEPLOYMENT
-# require 'sinatra/reloader'
-# require 'pry'
+require 'sinatra/reloader'
+require 'pry'
 # ----------------------
 require 'sinatra'
 require 'pg'
@@ -173,10 +173,13 @@ post '/profile/update' do
   @user.location_id = params[:location]
   @user.save
 
-  # only add interest if not previously an interest
+  # clear interested industries
+  @user.interested_industries = []
+
+  # save interested industries of new user from checkboxes
   @interests =  params[:interested_industries][:preferences]
   @interests.each do |industry_id|
-    @user.interested_industries << Industry.find(industry_id) unless @user.interested_industries.include? (Industry.find(industry_id))
+    @user.interested_industries << Industry.find(industry_id)
   end
 
   redirect to '/dashboard'
@@ -200,7 +203,6 @@ delete '/unsubscribe' do
   else
     redirect to '/dashboard'
   end
-
 end
 
 
@@ -248,6 +250,7 @@ get '/admin/dashboard' do
   @user = User.find_by(id: session[:user_id])
 
   @potential_introductions = []
+  @display_introductions = []
   @selection = "Select a user"
 
   erb :admin_dashboard
@@ -261,6 +264,7 @@ end
 
 # return potential introductions for user selected
 get '/admin/search/:user_id' do
+  @introductions = Introduction.all
   @user_id = params[:user_id].to_i
   @selection = "#{ User.find(@user_id).first_name } #{ User.find(@user_id).last_name }"
 
@@ -287,14 +291,27 @@ get '/admin/search/:user_id' do
   end
 
   # check that users are interested in the industry the selected user is in
-  @potential_introductions = []
+  @potential_introductions = [] # array of user id's
   @distinct_interested_industries_users.each do |id|
     User.find(id).interested_industries.each do |industry|
-      if industry.id == @user_id
+      if industry.id == User.find(@user_id).industry_id
         @potential_introductions << id
       end
     end
   end
+
+  # check whether the user has previously been matched to the potential introduction
+  @curated_introductions = []
+  @potential_introductions.each do |id|
+    @introductions.each do |intro|
+      if (intro.user_id == @user_id && intro.connection_id == id) || (intro.user_id == id && intro.connection_id == @user_id)
+      else
+        @curated_introductions << id
+      end
+    end
+  end
+
+  @display_introductions = @curated_introductions.uniq
 
   erb :admin_dashboard
 end

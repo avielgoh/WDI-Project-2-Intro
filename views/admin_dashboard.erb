@@ -72,7 +72,7 @@
           <tbody>
             <form role="form" class="form-horizontal" action="/admin/introduction" method="post">
               <input type="hidden" name="current_user" value="<%= @user_id%>">
-              <% @potential_introductions.each do |id| %>
+              <% @display_introductions.each do |id| %>
                 <% @introduction = User.find(id)%>
                   <tr>
                     <th scope="row">
