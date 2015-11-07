@@ -1,0 +1,159 @@
+<!-- RESPONSIVE NAV BAR -->
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img alt="Brand" src="/images/intro-logo.png" class="logo"></a>
+    </div>
+
+    <!-- Nav links for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right text-center">
+        <li>
+          <form class="" action="/session" method="post">
+            <input type="hidden" name="_method" value="delete">
+            <button class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Log Out</button>
+          </form>
+        </li>
+        <li><p class="navbar-text">Signed in as Administrator</p></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<br>
+
+<div class="container">
+  <!-- Nav tabs -->
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <ul class="nav nav-tabs nav-justified">
+        <li role="presentation"><a href="/admin/dashboard"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Dashboard</a></li>
+        <li role="presentation" class="active"><a href="/admin/history"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> History</a></li>
+        <li role="presentation"><a href="/admin/settings"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</a></li>
+      </ul>
+    </div>
+  </div>
+<br>
+  <!-- Make introduction table -->
+  <div class="panel panel-default col-md-10 col-md-offset-1">
+    <div class="panel-heading">
+      <h3 class="panel-title">Past introductions</h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+          <thead>
+            <th>#</th>
+            <th>Date</th>
+            <th>User 1</th>
+            <th>User 1 Rating</th>
+            <th>User 2</th>
+            <th>User 2 Rating</th>
+          </thead>
+          <tbody>
+            <% count = 1 %>
+            <% @display_introductions.each do |id|%>
+            <% @intro = Introduction.find(id)%>
+            <% @user_one = User.find(@intro.user_id) %>
+            <% @user_two = User.find(@intro.connection_id) %>
+            <% @introduction.each do |intro|
+              if intro.user_id == @user_one.id && intro.connection_id == @user_two.id
+                @user_one_rating = intro.rating
+              elsif intro.user_id == @user_two.id && intro.connection_id == @user_one.id
+                @user_two_rating = intro.rating
+              end
+            end %>
+              <tr>
+                <th scope="row"><%= count %></th>
+                <td><%= @intro.connection_date %></td>
+                <td>
+                  <a href="" type="button" class="btn" data-toggle="modal" data-target="#<%= @user_one.id %>" data-whatever="@getbootstrap"><%= @user_one.first_name %> <%= @user_one.last_name %></a>
+                    <div class="modal fade" id="<%= @user_one.id %>" tabindex="-1" role="dialog" aria-labelledby="<%= @user_one.id %>">
+                      <div class="modal-dialog" role="document"> <!-- Modal for unsubscribe -->
+                        <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title" id="<%= @user_one.id %>"><%= @user_one.first_name %> <%= @user_one.last_name %></h4>
+                        </div>
+                        <div class="modal-body">
+                          <dl class="dl-horizontal">
+                            <dt>Email: </dt>
+                              <dd><%= @user_one.email %></dd>
+                            <dt>LinkedIn: </dt>
+                              <dd><a href="<%= @user_one.linkedin_url %>"><%= @user_one.linkedin_url %></a></dd>
+                            <% if @user_one.personal_url != ""%>
+                              <dt>Personal website: </dt>
+                                <dd><a href="<%= @user_one.personal_url %>"><%= @user_one.personal_url %></a></dd>
+                            <% end %>
+                            <dt>Industry: </dt>
+                              <dd><%= @user_one.industry.name %></dd>
+                            <dt>Location: </dt>
+                              <dd><%= @user_one.location.city %>, <%= @user_one.location.country %></dd>
+                          </dl>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <% if @user_one_rating == true %>
+                    <button class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
+                  <% elsif @user_one_rating == false %>
+                    <button class="btn btn-default"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button>
+                  <% else %>
+                    N/A
+                  <% end %>
+                </td>
+                <td>
+                  <a href="" type="button" class="btn" data-toggle="modal" data-target="#<%= @user_two.id %>" data-whatever="@getbootstrap"><%= @user_two.first_name %> <%= @user_two.last_name %></a>
+                    <div class="modal fade" id="<%= @user_two.id %>" tabindex="-1" role="dialog" aria-labelledby="<%= @user_two.id %>">
+                      <div class="modal-dialog" role="document"> <!-- Modal for unsubscribe -->
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="<%= @user_two.id %>"><%= @user_two.first_name %> <%= @user_two.last_name %></h4>
+                          </div>
+                          <div class="modal-body">
+                            <dl class="dl-horizontal">
+                              <dt>Email: </dt>
+                                <dd><%= @user_two.email %></dd>
+                              <dt>LinkedIn: </dt>
+                                <dd><a href="<%= @user_two.linkedin_url %>"><%= @user_two.linkedin_url %></a></dd>
+                              <% if @user_two.personal_url != ""%>
+                                <dt>Personal website: </dt>
+                                  <dd><a href="<%= @user_two.personal_url %>"><%= @user_two.personal_url %></a></dd>
+                              <% end %>
+                              <dt>Industry: </dt>
+                                <dd><%= @user_two.industry.name %></dd>
+                              <dt>Location: </dt>
+                                <dd><%= @user_two.location.city %>, <%= @user_two.location.country %></dd>
+                            </dl>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                <td>
+                  <% if @user_two_rating == true %>
+                    <button class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
+                  <% elsif @user_two_rating == false %>
+                    <button class="btn btn-default"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button>
+                  <% else %>
+                    N/A
+                  <% end %>
+                </td>
+              </tr>
+              <% count = count + 1 %>
+              <% end %>
+            </tbody>
+          </table>
+        <div class="row">
+      </div>
+    </div>
+  </div>
+</div>

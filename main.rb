@@ -1,6 +1,7 @@
 # REMOVE FOR DEPLOYMENT
 # require 'sinatra/reloader'
 # require 'pry'
+# require 'mailgun'
 # ----------------------
 require 'sinatra'
 require 'pg'
@@ -24,6 +25,11 @@ helpers do
 
   def current_user
     User.find_by(id: session[:user_id])
+  end
+
+
+  def admin
+    current_user.administrator == true
   end
 
   def logged_in?
@@ -102,13 +108,19 @@ post '/session' do
   user = User.find_by(email: params[:email]) # identify user by email address
 
   # create new session if user and password match
-  if user && user.authenticate(params[:password])
+  if user && user.authenticate(params[:password]) && user.administrator == true
+    session[:user_id] = user.id
+    redirect to '/admin/dashboard'
+  elsif user && user.authenticate(params[:password])
     session[:user_id] = user.id
     redirect to '/dashboard'
   else
     redirect to '/login'
   end
+
 end
+
+
 
 # delete session when user logs out
 delete '/session' do
@@ -210,6 +222,8 @@ end
 
 # display settings
 get '/admin/settings' do
+  redirect to '/' unless admin
+
   all_information # call helper
   @user = User.find_by(id: session[:user_id])
   erb :admin_settings
@@ -217,6 +231,7 @@ end
 
 # create new locations
 post '/admin/settings/edit_location' do
+  redirect to '/' unless admin
   @location = Location.new
   @location.city = params[:city]
   @location.country = params[:country]
@@ -226,12 +241,14 @@ end
 
 # delete location
 delete '/admin/settings/edit_location' do
+  redirect to '/' unless admin
   Location.find(params[:location]).destroy
   redirect to '/admin/settings'
 end
 
 # create new industry
 post '/admin/settings/edit_industry' do
+  redirect to '/' unless admin
   @industry = Industry.new
   @industry.name = params[:industry]
   @industry.save
@@ -240,12 +257,14 @@ end
 
 # delete industry
 delete '/admin/settings/edit_industry' do
+  redirect to '/' unless admin
   Industry.find_by(name: params[:industry]).destroy
   redirect to '/admin/settings'
 end
 
 # display introductions dashboard
 get '/admin/dashboard' do
+  redirect to '/' unless admin
   all_information # call helper
   @user = User.find_by(id: session[:user_id])
 
@@ -258,12 +277,14 @@ end
 
 # initiate by user
 post '/admin/search' do
+  redirect to '/' unless admin
   @selected_user = params[:selected_user]
   redirect to "/admin/search/#{ @selected_user }"
 end
 
 # return potential introductions for user selected
 get '/admin/search/:user_id' do
+  redirect to '/' unless admin
   @introductions = Introduction.all
   @user_id = params[:user_id].to_i
   @selection = "#{ User.find(@user_id).first_name } #{ User.find(@user_id).last_name }"
@@ -325,6 +346,7 @@ end
 
 # create a new introduction
 post '/admin/introduction' do
+  redirect to '/' unless admin
   @selected_user = params[:current_user].to_i
 
   # log introduction of current user to introduce user
@@ -340,6 +362,39 @@ post '/admin/introduction' do
   @introduction.save
 
   redirect to "/admin/dashboard"
+end
+
+get '/admin/history' do
+  redirect to '/' unless admin
+  all_information
+
+  @display_introductions = []
+  @introduction.each do |intro|
+    if intro.id.odd?
+      @display_introductions << intro.id
+    end
+  end
+
+  erb :admin_history
+end
+
+
+
+# --- CONTACT US ---
+post '/contactus' do
+# # First, instantiate the Mailgun Client with your API key
+# mg_client = Mailgun::Client.new("d3195a7cc6ad311ac2b390badf432711", ssl = false)
+#
+# # Define your message parameters
+# message_params = {:from    => 'postmaster@sandbox4abdd1f85f6345eab2f3362e12018e84.mailgun.org',
+#                   :to      => params[:email],
+#                   :subject => params[:subject],
+#                   :text    => params[:message]}
+#
+# # Send your message through the client
+# mg_client.send_message("sandbox4abdd1f85f6345eab2f3362e12018e84.mailgun.org", message_params)
+#
+redirect to '/'
 end
 
 ### PAGE STILL TO BE CREATED ###

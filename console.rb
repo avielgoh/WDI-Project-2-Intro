@@ -1,5 +1,6 @@
 require 'active_record'
 require 'pry'
+require 'mailgun'
 
 # this will show the SQL in the terminal
 ActiveRecord::Base.logger = Logger.new(STDERR)
