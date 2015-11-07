@@ -27,9 +27,12 @@ helpers do
     User.find_by(id: session[:user_id])
   end
 
-
   def admin
-    current_user.administrator == true
+    if logged_in? && current_user.administrator == true
+      true
+    else
+      false
+    end
   end
 
   def logged_in?
@@ -57,8 +60,10 @@ get '/signup' do
   # get info for drop down fields
   all_information # call helper
 
-  # redirect user to their dashboard if logged in
-  if logged_in?
+  # redirect user to their dashboard if logged in or admin
+  if admin
+    redirect to 'admin/dashboard'
+  elsif logged_in?
     redirect to '/dashboard'
   end
 
@@ -95,8 +100,10 @@ get '/login' do
   # get info for drop down fields
   all_information # call helper
 
-  # redirect user to their dashboard if logged in
-  if logged_in?
+  # redirect user to their dashboard if logged in or admin
+  if admin
+    redirect to 'admin/dashboard'
+  elsif logged_in?
     redirect to '/dashboard'
   end
 
