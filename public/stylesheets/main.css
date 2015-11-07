@@ -132,3 +132,22 @@ label {
 .footer {
   color: rgb(150, 150, 150);
 }
+
+@media (max-width:768px) {
+  .landing-page {
+    height: 650px;
+    width: 100%;
+    background-image: url(../images/background-phone.jpeg);
+    background-size: cover;
+    background-position: center;
+    color: white;
+    background-color: white;
+  }
+
+  .contact-us {
+    background-image: url(../images/background-phone.jpeg);
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+  }
+}
