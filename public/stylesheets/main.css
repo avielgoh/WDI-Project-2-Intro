@@ -135,16 +135,10 @@ label {
 
 @media (max-width:768px) {
   .landing-page {
-    height: 650px;
-    background-image: url(../images/background-phone.jpeg);
-    background-position: center;
-    color: white;
-    background-color: white;
+    background-size: auto;
   }
 
   .contact-us {
-    background-image: url(../images/background-phone.jpeg);
-    background-attachment: fixed;
-    background-position: center;
+    background-size: auto;
   }
 }
