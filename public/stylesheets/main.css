@@ -5,6 +5,14 @@ body {
  font-family: 'Raleway', sans-serif;
 }
 
+.table {
+    word-wrap: break-word;
+}
+
+dl {
+  word-wrap: break-word;
+}
+
 .navbar {
   background-color: white;
 }
@@ -24,7 +32,7 @@ body {
 }
 
 .landing-page {
-  height: 680px;
+  height: 650px;
   width: 100%;
   background-image: url(../images/background-small.jpg);
   background-size: cover;
@@ -72,27 +80,52 @@ label {
   padding: 0;
 }
 
+.faq-questions p {
+  padding-bottom: 20px;
+
+}
+
 /* ----- MARKETING ----- */
 
 .marketing {
-  padding-top: 120px;
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 
-.marketing p {
-  padding-bottom: 75px;
+.box-one p, .box-two p, .about-header p, .contact-header p {
+  padding-bottom: 50px;
+  font-size: 16px;
 }
+
 .marketing .col-lg-4 {
   margin-bottom: 20px;
   text-align: center;
 }
 .marketing h2 {
   font-weight: normal;
+  font-size: 24px;
+
 }
-.marketing .col-lg-4 p {
+.marketing .col-lg-4 p, .form-submit p {
   margin-right: 10px;
   margin-left: 10px;
-  font-size: 16px;
+  font-size: 14px;
 }
+
+/* ----- MARKETING ----- */
+
+.contact-us {
+  width: 100%;
+  background-image: url(../images/background-small.jpg);
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  color: white;
+  padding-top: 80px;
+  padding-bottom: 80px;
+  border: none;
+}
+
 
 /* ----- FOOTER ----- */
 
