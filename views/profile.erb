@@ -65,97 +65,99 @@
       </ul>
     </div>
   </div>
-
 <br>
-  <!-- Edit personal details -->
-  <div class="col-md-10 col-md-offset-1">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Personal details</h3>
-      </div>
-      <div class="panel-body">
-        <form role="form" class="form-horizontal" action="/profile/update" method="post">
-          <div class="form-group">
-            <label class="text-right col-sm-3" for="user_first_name">First name</label>
-            <div class="col-sm-9">
-              <input type="text" class="form-control" name="first_name" value="<%= @user.first_name %>">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="text-right col-sm-3" for="user_last_name">Last name</label>
-            <div class="col-sm-9">
-              <input type="text" class="form-control" name="last_name" value="<%= @user.last_name %>">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="text-right col-sm-3" for="email">Email address</label>
-            <div class="col-sm-9">
-              <input type="email" class="form-control" name="email" value="<%= @user.email %>">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="text-right col-sm-3" for="linkedin_url">LinkedIn profile</label>
-            <div class="col-sm-9">
-              <input type="text" class="form-control" name="linkedin_url" value="<%= @user.linkedin_url %>">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="text-right col-sm-3" for="personal_url">Personal link</label>
-            <div class="col-sm-9">
-              <input type="text" class="form-control" name="personal_url" value="<%= @user.personal_url %>">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="text-right col-sm-3" for="industry">Industry</label>
-            <div class="col-sm-9">
-              <select class="form-control" name="current_industry">
-                <% @industries.each do |industry| %>
-                    <% if industry.name == @user.industry.name %>
-                      <option selected value="<%= industry.id %>"> <%= industry.name %> </option>
-                    <% else %>
-                      <option value="<%= industry.id %>"> <%= industry.name %> </option>
-                    <% end %>
-                  <% end %>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="text-right col-sm-3" for="location">City</label>
-            <div class="col-sm-9">
-              <select class="form-control" name="location">
-                <% @locations.each do |location| %>
-                    <% if location.id == @user.location_id %>
-                      <option selected value="<%= location.id %>"> <%= location.city %>, <%= location.country %> </option>
-                    <% else %>
-                      <option value="<%= location.id %>"> <%= location.city %>, <%= location.country %> </option>
-                    <% end %>
-                  <% end %>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="text-right col-sm-3" for="interested_industries">Industries I would like to meet people from:</label>
-            <div class="col-sm-9">
-              <% @industries.each do |industry| %>
-                <% if @user.interested_industries.include? (industry) %>
-                  <label class="checkbox col-sm-6">
-                  <input type="checkbox" name="interested_industries[preferences][]" value="<%= industry.id %>" checked> <%= industry.name %>
-                  </label>
-                <% else %>
-                  <label class="checkbox col-sm-6">
-                  <input type="checkbox" name="interested_industries[preferences][]" value="<%= industry.id %>"> <%= industry.name %>
-                  </label>
-                <% end %>
-              <% end %>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="col-sm-9 col-sm-offset-3">
-              <button type="submit" class="btn btn-primary btn-block">Save</button>
-            </div>
-          </div>
+  <div class="row">
+
+    <!-- Edit personal details -->
+    <div class="col-xs-12 col-sm-12 col-md-10 col-md-offset-1 col-lg-10 col-ld-offset-1">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Personal details</h3>
         </div>
-      </form>
+        <div class="panel-body">
+          <form role="form" class="form-horizontal" action="/profile/update" method="post">
+            <div class="form-group">
+              <label class="text-right col-sm-3" for="user_first_name">First name</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" name="first_name" value="<%= @user.first_name %>">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="text-right col-sm-3" for="user_last_name">Last name</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" name="last_name" value="<%= @user.last_name %>">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="text-right col-sm-3" for="email">Email address</label>
+              <div class="col-sm-9">
+                <input type="email" class="form-control" name="email" value="<%= @user.email %>">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="text-right col-sm-3" for="linkedin_url">LinkedIn profile</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" name="linkedin_url" value="<%= @user.linkedin_url %>">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="text-right col-sm-3" for="personal_url">Personal link</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" name="personal_url" value="<%= @user.personal_url %>">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="text-right col-sm-3" for="industry">Industry</label>
+              <div class="col-sm-9">
+                <select class="form-control" name="current_industry">
+                  <% @industries.each do |industry| %>
+                      <% if industry.name == @user.industry.name %>
+                        <option selected value="<%= industry.id %>"> <%= industry.name %> </option>
+                      <% else %>
+                        <option value="<%= industry.id %>"> <%= industry.name %> </option>
+                      <% end %>
+                    <% end %>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="text-right col-sm-3" for="location">City</label>
+              <div class="col-sm-9">
+                <select class="form-control" name="location">
+                  <% @locations.each do |location| %>
+                      <% if location.id == @user.location_id %>
+                        <option selected value="<%= location.id %>"> <%= location.city %>, <%= location.country %> </option>
+                      <% else %>
+                        <option value="<%= location.id %>"> <%= location.city %>, <%= location.country %> </option>
+                      <% end %>
+                    <% end %>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="text-right col-sm-3" for="interested_industries">Industries I would like to meet people from:</label>
+              <div class="col-sm-9">
+                <% @industries.each do |industry| %>
+                  <% if @user.interested_industries.include? (industry) %>
+                    <label class="checkbox col-sm-6">
+                    <input type="checkbox" name="interested_industries[preferences][]" value="<%= industry.id %>" checked> <%= industry.name %>
+                    </label>
+                  <% else %>
+                    <label class="checkbox col-sm-6">
+                    <input type="checkbox" name="interested_industries[preferences][]" value="<%= industry.id %>"> <%= industry.name %>
+                    </label>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-9 col-sm-offset-3">
+                <button type="submit" class="btn btn-primary btn-block">Save</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

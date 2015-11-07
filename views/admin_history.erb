@@ -83,7 +83,7 @@
                         <div class="modal-body">
                           <dl class="dl-horizontal">
                             <dt>Email: </dt>
-                              <dd><%= @user_one.email %></dd>
+                              <dd><a href="mailto:<%= @user_one.email %>"><%= @user_one.email %></a></dd>
                             <dt>LinkedIn: </dt>
                               <dd><a href="<%= @user_one.linkedin_url %>"><%= @user_one.linkedin_url %></a></dd>
                             <% if @user_one.personal_url != ""%>
@@ -120,8 +120,7 @@
                           </div>
                           <div class="modal-body">
                             <dl class="dl-horizontal">
-                              <dt>Email: </dt>
-                                <dd><%= @user_two.email %></dd>
+                              <dd><a href="mailto:<%= @user_two.email %>"><%= @user_two.email %></a></dd>
                               <dt>LinkedIn: </dt>
                                 <dd><a href="<%= @user_two.linkedin_url %>"><%= @user_two.linkedin_url %></a></dd>
                               <% if @user_two.personal_url != ""%>

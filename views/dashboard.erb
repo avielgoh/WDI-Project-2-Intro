@@ -65,14 +65,10 @@
     </div>
   </div>
 <br>
-  <!-- User display picture -->
   <div class="row">
-    <div class="col-xs-offset-4 col-sm-offset-4 col-md-2 col-md-offset-1">
-      <img src="http://www.placehold.it/180x180" alt="..." class="img-circle img-responsive profile-picture">
-    </div>
 
     <!-- Display user information -->
-    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+    <div class="col-xs-12 col-sm-12 col-md-10 col-md-offset-1 col-lg-10 col-ld-offset-1">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title pull-left">Hi there, <%= @user.first_name %>!</h3>
@@ -82,7 +78,7 @@
         <div class="panel-body">
           <dl class="dl-horizontal">
             <dt>Email: </dt>
-              <dd><%= @user.email %></dd>
+              <dd><a href="mailto:<%= @user.email %>"><%= @user.email %></a></dd>
             <dt>LinkedIn: </dt>
               <dd><a href="<%= @user.linkedin_url %>"><%= @user.linkedin_url %></a></dd>
             <% if @user.personal_url != ""%>
@@ -99,14 +95,10 @@
     </div>
   </div>
 
-  <!-- Display days until next introduction -->
   <div class="row">
-    <div class="col-xs-2 col-xs-offset-1">
-      <!-- <h4><span class="label label-default">12 days until new intro!</span></h4> -->
-    </div>
 
     <!-- Display previous introductions -->
-    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+    <div class="col-xs-12 col-sm-12 col-md-10 col-md-offset-1 col-lg-10 col-ld-offset-1">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">Your previous introductions</h3>
@@ -123,10 +115,39 @@
             <tbody>
               <% count = 1 %>
               <% @user.introductions.each do |connection| %>
+              <% @introduced_users = @all_users.find(connection.connection_id) %>
                 <tr>
                   <th scope="row"><%= count %></th>
-                  <td><%= @all_users.find(connection.connection_id).first_name %> <%= @all_users.find(connection.connection_id).last_name %></td>
-                  <td><%= @all_users.find(connection.connection_id).industry.name %></td>
+                  <td>
+                    <a href="" type="button" class="btn" data-toggle="modal" data-target="#<%= @introduced_users.id %>" data-whatever="@getbootstrap"><%= @introduced_users.first_name %> <%= @introduced_users.last_name %></a>
+                      <div class="modal fade" id="<%= @introduced_users.id %>" tabindex="-1" role="dialog" aria-labelledby="<%= @introduced_users.id %>">
+                        <div class="modal-dialog" role="document"> <!-- Modal for unsubscribe -->
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                              <h4 class="modal-title" id="<%= @introduced_users.id %>"><%= @introduced_users.first_name %> <%= @introduced_users.last_name %></h4>
+                            </div>
+                            <div class="modal-body">
+                              <dl class="dl-horizontal">
+                                <dt>Email: </dt>
+                                <dd><a href="mailto:<%= @introduced_users.email %>"><%= @introduced_users.email %></a></dd>
+                                <dt>LinkedIn: </dt>
+                                  <dd><a href="<%= @introduced_users.linkedin_url %>"><%= @introduced_users.linkedin_url %></a></dd>
+                                <% if @introduced_users.personal_url != ""%>
+                                  <dt>Personal website: </dt>
+                                    <dd><a href="<%= @introduced_users.personal_url %>"><%= @introduced_users.personal_url %></a></dd>
+                                <% end %>
+                                <dt>Industry: </dt>
+                                  <dd><%= @introduced_users.industry.name %></dd>
+                                <dt>Location: </dt>
+                                  <dd><%= @introduced_users.location.city %>, <%= @introduced_users.location.country %></dd>
+                              </dl>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  </td>
+                  <td><%= @introduced_users.industry.name %></td>
                   <td><%= connection.connection_date%></td>
                   <td>
                     <% if Introduction.find(connection.id.to_i).rating == true %>
