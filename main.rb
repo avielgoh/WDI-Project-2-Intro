@@ -1,6 +1,6 @@
 # REMOVE FOR DEPLOYMENT
-# require 'sinatra/reloader'
-# require 'pry'
+require 'sinatra/reloader'
+require 'pry'
 # require 'mailgun'
 # ----------------------
 require 'sinatra'
@@ -302,16 +302,17 @@ get '/admin/search/:user_id' do
     @interested_industries << industry.id
   end
 
+
   # get users in the industries the selected user is interested in
-  @interested_industries_users = [] # array of user id's
+  @interested_industries_users = [] # array of user id's that are in the industries the selected user is interested in
   @interested_industries.each do |id|
-    Industry.find(id).interested_users.each do |user|
+    Industry.find(id).users.each do |user|
       @interested_industries_users << user.id
     end
   end
 
   # filter for unique id's and id of the selected user
-  @distinct_interested_industries_users = []
+  @distinct_interested_industries_users = [] # array of user id's
   @interested_industries_users.uniq.each do |id|
     if id != @user_id
       @distinct_interested_industries_users << id
@@ -319,11 +320,11 @@ get '/admin/search/:user_id' do
   end
 
   # check that users are interested in the industry the selected user is in
-  @potential_introductions = [] # array of user id's
-  @distinct_interested_industries_users.each do |id|
-    User.find(id).interested_industries.each do |industry|
+  @potential_introductions = []
+  @distinct_interested_industries_users.each do |user|
+    User.find(user).interested_industries.each do |industry|
       if industry.id == User.find(@user_id).industry_id
-        @potential_introductions << id
+        @potential_introductions << user
       end
     end
   end
