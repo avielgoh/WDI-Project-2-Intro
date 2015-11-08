@@ -389,22 +389,11 @@ end
 
 # --- CONTACT US ---
 post '/contactus' do
-# # First, instantiate the Mailgun Client with your API key
-# mg_client = Mailgun::Client.new("d3195a7cc6ad311ac2b390badf432711", ssl = false)
-#
-# # Define your message parameters
-# message_params = {:from    => 'postmaster@sandbox4abdd1f85f6345eab2f3362e12018e84.mailgun.org',
-#                   :to      => params[:email],
-#                   :subject => params[:subject],
-#                   :text    => params[:message]}
-#
-# # Send your message through the client
-# mg_client.send_message("sandbox4abdd1f85f6345eab2f3362e12018e84.mailgun.org", message_params)
-#
+
 redirect to '/'
 end
 
-### PAGE STILL TO BE CREATED ###
+# --- FAQ ---
 get '/faq' do
   erb :faq
 end
