@@ -35,6 +35,8 @@
       <ul class="nav nav-tabs nav-justified">
         <li role="presentation" class="active"><a href="/admin/dashboard"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Dashboard</a></li>
         <li role="presentation"><a href="/admin/history"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> History</a></li>
+        <li role="presentation"><a href="/admin/users"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Users</a></li>
+        <li role="presentation"><a href="/admin/industries"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>  Industries</a></li>
         <li role="presentation"><a href="/admin/settings"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</a></li>
       </ul>
     </div>
@@ -46,12 +48,12 @@
       <h3 class="panel-title">Make introduction</h3>
     </div>
     <div class="panel-body">
-      <form class="form-inline" action="/admin/search" method="post">
+      <form class="form-inline" action="/admin/search_users" method="post">
         <div class="row">
           <div class="form-group">
             <select class="form-control" name="selected_user">
               <option selected disabled><%= @selection %></option>
-              <% User.all.each do |user| %>
+              <% @all_users.each do |user| %>
                 <option value="<%= user.id %>"><%= user.first_name %> <%= user.last_name %></option>
               <% end %>
             </select>
@@ -85,8 +87,8 @@
                     </th>
                     <td><%= @introduction.first_name %> <%= @introduction.last_name %></td>
                     <td><%= Industry.find(@introduction.industry_id).name %></td>
-                    <td><%= @introduction.email %></td>
-                    <td><%= @introduction.linkedin_url %></td>
+                    <td><a href="mailto: <%= @introduction.email %>"> <%= @introduction.email %> </a></td>
+                    <td class="links-break"><a href="<%= @introduction.linkedin_url %>"><%= @introduction.linkedin_url %></a></td>
                   </tr>
                 <% end %>
               </tbody>

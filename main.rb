@@ -283,14 +283,16 @@ get '/admin/dashboard' do
 end
 
 # initiate by user
-post '/admin/search' do
+post '/admin/search_users' do
+  all_information # call helper
   redirect to '/' unless admin
   @selected_user = params[:selected_user]
-  redirect to "/admin/search/#{ @selected_user }"
+  redirect to "/admin/search/user/#{ @selected_user }"
 end
 
 # return potential introductions for user selected
-get '/admin/search/:user_id' do
+get '/admin/search/user/:user_id' do
+  all_information # call helper
   redirect to '/' unless admin
   @introductions = Introduction.all
   @user_id = params[:user_id].to_i
@@ -384,6 +386,37 @@ get '/admin/history' do
   end
 
   erb :admin_history
+end
+
+get '/admin/users' do
+  redirect to '/' unless admin
+  all_information
+
+  erb :admin_users
+end
+
+get '/admin/industries' do
+  redirect to '/' unless admin
+  all_information
+  @selected_industry = []
+  @industry_id = 1
+  @selection =   @selection = "#{ Industry.find(@industry_id).name }"
+  erb :admin_industries
+end
+
+post '/admin/search_industries' do
+  redirect to '/' unless admin
+  @selected_industry = params[:selected_industry].to_i
+  redirect to "/admin/search/industry/#{ @selected_industry }"
+end
+
+get '/admin/search/industry/:industry_id' do
+  redirect to '/' unless admin
+  @industry_id = params[:industry_id]
+  all_information
+  @selection = "#{ Industry.find(@industry_id).name }"
+
+  erb :admin_industries
 end
 
 

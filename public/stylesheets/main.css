@@ -13,6 +13,10 @@ dl {
   word-wrap: break-word;
 }
 
+.links-break {
+  word-break: break-all;
+}
+
 .navbar {
   background-color: white;
 }

@@ -1,0 +1,124 @@
+<!-- RESPONSIVE NAV BAR -->
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img alt="Brand" src="/images/intro-logo.png" class="logo"></a>
+    </div>
+
+    <!-- Nav links for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right text-center">
+        <li>
+          <form class="" action="/session" method="post">
+            <input type="hidden" name="_method" value="delete">
+            <button class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Log Out</button>
+          </form>
+        </li>
+        <li><p class="navbar-text">Signed in as Administrator</p></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<br>
+
+<div class="container">
+  <!-- Nav tabs -->
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <ul class="nav nav-tabs nav-justified">
+        <li role="presentation"><a href="/admin/dashboard"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Dashboard</a></li>
+        <li role="presentation"><a href="/admin/history"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> History</a></li>
+        <li role="presentation"><a href="/admin/users"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Users</a></li>
+        <li role="presentation" class="active"><a href="/admin/industries"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>  Industries</a></li>
+        <li role="presentation"><a href="/admin/settings"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</a></li>
+      </ul>
+    </div>
+  </div>
+<br>
+  <!-- Make introduction table -->
+  <div class="panel panel-default col-md-10 col-md-offset-1">
+    <div class="panel-heading">
+      <h3 class="panel-title">Industries</h3>
+    </div>
+    <div class="panel-body">
+      <form class="form-inline" action="/admin/search_industries" method="post">
+        <div class="row">
+          <div class="form-group">
+            <select class="form-control" name="selected_industry">
+              <option selected disabled><%= @selection %></option>
+              <% @industries.each do |industry| %>
+                <option value="<%= industry.id %>"><%= industry.name %></option>
+              <% end %>
+            </select>
+            <button type="submit" class="btn btn-default">Find</button>
+          </div>
+        </form>
+      </div>
+    <br>
+      <div class="row">
+        <!-- Display potential introductions -->
+        <table class="table table-hover">
+          <thead>
+            <th>#</th>
+            <th>Registration date</th>
+            <th>Name</th>
+            <th>Email</th>
+          </thead>
+          <tbody>
+            <% count = 1 %>
+            <% Industry.find(@industry_id).users.each do |user| %>
+              <tr>
+                <th scope="row"><%= count %></th>
+                <td><%= user.date_joined %></td>
+                <td>
+                  <a href="" type="button" class="btn" data-toggle="modal" data-target="#<%= user.id %>" data-whatever="@getbootstrap"><%= user.first_name %> <%= user.last_name %></a>
+                    <div class="modal fade" id="<%= user.id %>" tabindex="-1" role="dialog" aria-labelledby="<%= user.id %>">
+                      <div class="modal-dialog" role="document"> <!-- Modal for unsubscribe -->
+                        <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title" id="<%= user.id %>"><%= user.first_name %> <%= user.last_name %></h4>
+                        </div>
+                        <div class="modal-body">
+                          <dl class="dl-horizontal">
+                            <dt>Email: </dt>
+                              <dd><a href="mailto:<%= user.email %>"><%= user.email %></a></dd>
+                            <dt>LinkedIn: </dt>
+                              <dd><a href="<%= user.linkedin_url %>"><%= user.linkedin_url %></a></dd>
+                            <% if user.personal_url != ""%>
+                              <dt>Personal website: </dt>
+                                <dd><a href="<%= user.personal_url %>"><%= user.personal_url %></a></dd>
+                            <% end %>
+                            <dt>Industry: </dt>
+                              <dd><%= user.industry.name %></dd>
+                            <dt>Location: </dt>
+                              <dd><%= user.location.city %>, <%= user.location.country %></dd>
+                            <dt>Interests: </dt>
+                              <% User.find(user.id).interested_industries.each do |industry| %>
+                                <dd><%= industry.name %></dd>
+                              <% end %>
+                          </dl>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td><a href="mailto:<%= user.email %>"><%= user.email %></a></td>
+              </tr>
+              <% count = count + 1 %>
+              <% end %>
+            </tbody>
+            </table>
+          </table>
+        <div class="row">
+      </div>
+    </div>
+  </div>
+</div>
