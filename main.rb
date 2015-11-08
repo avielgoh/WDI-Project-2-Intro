@@ -1,6 +1,6 @@
 # REMOVE FOR DEPLOYMENT
-require 'sinatra/reloader'
-require 'pry'
+# require 'sinatra/reloader'
+# require 'pry'
 # require 'mailgun'
 # ----------------------
 require 'sinatra'
