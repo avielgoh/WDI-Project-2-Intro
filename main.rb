@@ -374,6 +374,7 @@ post '/admin/introduction' do
   redirect to "/admin/dashboard"
 end
 
+# display history of introductions
 get '/admin/history' do
   redirect to '/' unless admin
   all_information
@@ -388,6 +389,7 @@ get '/admin/history' do
   erb :admin_history
 end
 
+# display list of all registered users
 get '/admin/users' do
   redirect to '/' unless admin
   all_information
@@ -395,6 +397,7 @@ get '/admin/users' do
   erb :admin_users
 end
 
+# display selection form for industry search
 get '/admin/industries' do
   redirect to '/' unless admin
   all_information
@@ -404,12 +407,14 @@ get '/admin/industries' do
   erb :admin_industries
 end
 
+# find users based on industry
 post '/admin/search_industries' do
   redirect to '/' unless admin
   @selected_industry = params[:selected_industry].to_i
   redirect to "/admin/search/industry/#{ @selected_industry }"
 end
 
+# display list of users based on industry selected
 get '/admin/search/industry/:industry_id' do
   redirect to '/' unless admin
   @industry_id = params[:industry_id]
@@ -420,11 +425,11 @@ get '/admin/search/industry/:industry_id' do
 end
 
 
-
 # --- CONTACT US ---
-post '/contactus' do
 
-redirect to '/'
+# STILL TO BE COMPLETED
+post '/contactus' do
+  redirect to '/'
 end
 
 # --- FAQ ---

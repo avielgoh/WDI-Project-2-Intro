@@ -27,6 +27,11 @@ Build an application with Ruby in the backend that utilises CRUD operations on a
 - Users can give feedback (i.e. thumbs up or down) on their past connections (this will only be visible to the administrators curating the introductions)
 - Administrators can generate a list of potential introductions for a selected user and based on that list, create introductions for users (this will automatically display on both users' dashboards)
 
+## Features to be added
+
+- Automatically generate an email to users when administrators create introductions from the administrator dashboard
+- Add email functionality to the contact us form
+
 ## Links
 
 Check out the site - [https://heyintro.herokuapp.com/](https://heyintro.herokuapp.com/)
@@ -119,6 +124,8 @@ Administrators are able, via the administrator dashboard, to view the following:
   * Preview of the introductions' profile
   * Date of introduction
   * Feedback given by each user (thumbs up or down)
+- View a list of all registered users
+- Find users based on the industry they are in
 
 #### Update
 Users are able to log into their account to update the following:
