@@ -34,17 +34,14 @@ dl {
   border: none;
 }
 
-header {
+.landing-page {
   height: 100vh;
-  background-image: url(../images/background-small.jpg);
+  width: 100%;
+  background-image: url(../images/background.jpeg);
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
   color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .jumbotron {
@@ -81,7 +78,6 @@ label {
 }
 
 .btn:focus {
-  outline: none !important;
   box-shadow: none;
 }
 
@@ -125,7 +121,7 @@ label {
 
 .contact-us {
   width: 100%;
-  background-image: url(../images/background-small.jpg);
+  background-image: url(../images/background.jpeg);
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
