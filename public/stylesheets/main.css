@@ -40,7 +40,6 @@ dl {
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  background-repeat: no-repeat;
   color: white;
   margin: 0;
 }
@@ -122,7 +121,6 @@ label {
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
-  background-repeat: no-repeat;
   color: white;
   padding-top: 80px;
   padding-bottom: 80px;
