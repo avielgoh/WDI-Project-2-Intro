@@ -1,6 +1,5 @@
 body {
- padding-top: 50px;
- padding-bottom: 20px;
+  margin-top: 50px;
  color: rgb(60, 60, 60);
  font-family: 'Raleway', sans-serif;
 }
@@ -35,15 +34,21 @@ dl {
   border: none;
 }
 
-.landing-page {
-  height: 650px;
-  width: 100%;
+header {
+  height: 100vh;
   background-image: url(../images/background-small.jpg);
   background-size: cover;
-  background-attachment: fixed;
   background-position: center;
+  background-attachment: fixed;
   color: white;
-  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.jumbotron {
+  background: none;
 }
 
 .glyphicon-menu-down {
