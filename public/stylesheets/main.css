@@ -42,6 +42,7 @@ dl {
   background-attachment: fixed;
   color: white;
   margin: 0;
+  width: 100%;
 }
 
 .glyphicon-menu-down {
@@ -125,7 +126,7 @@ label {
   padding-top: 80px;
   padding-bottom: 80px;
   border: none;
-  margin: 0;
+  width: 100%;
 }
 
 
@@ -137,7 +138,8 @@ label {
 
 @media (max-width:768px) {
   .landing-page {
-    background-size: auto;
+    background-image: url(../images/phone.jpeg);
+    background-size: cover;
   }
 
   .contact-us {
