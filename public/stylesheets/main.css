@@ -135,14 +135,3 @@ label {
 .footer {
   color: rgb(150, 150, 150);
 }
-
-@media (max-width:768px) {
-  .landing-page {
-    background-image: url(../images/phone.jpeg);
-    background-size: cover;
-  }
-
-  .contact-us {
-    background-size: auto;
-  }
-}
