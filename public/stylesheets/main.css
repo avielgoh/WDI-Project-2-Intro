@@ -38,7 +38,7 @@ dl {
 .landing-page {
   height: 650px;
   width: 100%;
-  background-image: url(../images/background-small.jpg);
+  background-image: url(../images/background.jpeg);
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
@@ -76,7 +76,6 @@ label {
 }
 
 .btn:focus {
-  outline: none !important;
   box-shadow: none;
 }
 
@@ -120,7 +119,7 @@ label {
 
 .contact-us {
   width: 100%;
-  background-image: url(../images/background-small.jpg);
+  background-image: url(../images/background.jpeg);
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
