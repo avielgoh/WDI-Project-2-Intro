@@ -36,7 +36,7 @@ dl {
 
 .landing-page {
   height: 100vh;
-  background-image: url(../images/background.jpeg);
+  background-image: url(http://i.imgur.com/IDwHPTx.jpg);
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -117,7 +117,7 @@ label {
 
 
 .contact-us {
-  background-image: url(../images/background.jpeg);
+  background-image: url(http://i.imgur.com/IDwHPTx.jpg);
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
