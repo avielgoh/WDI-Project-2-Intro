@@ -36,6 +36,16 @@ Build an application with Ruby in the backend that utilises CRUD operations on a
 
 Check out the site - [https://heyintro.herokuapp.com/](https://heyintro.herokuapp.com/)
 
+Dummy login details for access to the user and administrator dashboards:
+
+###### Administrator
+**Email:** admin@heyintro.com
+**Password:** admin
+
+###### User
+**Email:** annie.hunter@heyintro.com
+**Password:** anniehunter
+
 ## Approach / design notes
 
 #### Fluffy stuff
